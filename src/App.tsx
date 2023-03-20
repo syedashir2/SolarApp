@@ -38,11 +38,17 @@ const App = () => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastname] = useState('')
   const [email, setEmail] = useState('')
-  const [allUsersData, setAllUsersData] = useState([])
+  const [allUsersData, setAllUsersData] = useState<any[]>([])
   const [adduser, setAddUser] = useState(false)
   const [editUser, setEditUser] = useState(false)
-  const [selectedUser, setSelectedUser] = useState({})
-
+  const [selectedUser, setSelectedUser] = useState<{
+    firstName: string; lastName: string; email: string; id: number
+  }>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    id: 0,
+  });
   useEffect(() => {
     createCollectionsIndexedDB();
     getAll();
@@ -64,6 +70,8 @@ const App = () => {
       const users = userData.getAll()
       users.onsuccess = (query) => {
         setAllUsersData(query.srcElement.result)
+        // console.log("uery",query);
+
       }
       users.onerror = (query) => {
         alert("Error occured while loading initial data");
@@ -199,7 +207,7 @@ const App = () => {
             />
           </div>
           <div className='form-group'>
-            <button className='btn btn-primary mt-2' onClick={(e) => handleSubmit(e)}>
+            <button className='btn btn-primary mt-2' onClick={(e) => handleSubmit()}>
               {editUser ? "Update" : "Add"}
             </button>
           </div>
